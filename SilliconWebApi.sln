@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilliconWebApi", "SilliconWebApi\SilliconWebApi.csproj", "{952CAC6B-1623-49D9-8E5B-384E2514429E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{99952A87-B26A-486C-8FFC-9C2720920F99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{952CAC6B-1623-49D9-8E5B-384E2514429E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{952CAC6B-1623-49D9-8E5B-384E2514429E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{952CAC6B-1623-49D9-8E5B-384E2514429E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99952A87-B26A-486C-8FFC-9C2720920F99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99952A87-B26A-486C-8FFC-9C2720920F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99952A87-B26A-486C-8FFC-9C2720920F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99952A87-B26A-486C-8FFC-9C2720920F99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
