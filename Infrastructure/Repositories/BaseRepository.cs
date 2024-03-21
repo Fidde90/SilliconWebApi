@@ -31,7 +31,7 @@ namespace Infrastructure.Repositories
             try
             {
                 var list = await _dataContext.Set<TEntity>().ToListAsync();
-                if (list != null)
+                if (list.Count > 0)
                     return list;
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }

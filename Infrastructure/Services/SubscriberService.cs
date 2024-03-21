@@ -24,9 +24,9 @@ namespace Infrastructure.Services
                         Email = email
                     };
 
-                    var created = _subscriberRepository.AddToDb(newSubscriber);
+                    var created = await _subscriberRepository.AddToDb(newSubscriber);
 
-                    if(created != null)
+                    if (created != null)
                     {
                         return newSubscriber;
                     }
@@ -48,6 +48,55 @@ namespace Infrastructure.Services
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
+        }
+
+        public async Task<SubscriberEntity> GetOneSubscriberAsync(int id)
+        {
+            try
+            {
+                var subscriber = await _subscriberRepository.GetOne(s => s.Id == id);
+                if (subscriber != null)
+                {
+                    return subscriber;
+                }
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
+
+        public async Task<SubscriberEntity> UpdateSubscriberAsync(int id, string email)
+        {
+            try
+            {
+                if (await _subscriberRepository.Exists(s => s.Id == id) && !string.IsNullOrWhiteSpace(email))
+                {
+                    var newSubscriberValues = new SubscriberEntity { Id = id, Email = email };
+                    var subscriber = await _subscriberRepository.UpdateEntity(newSubscriberValues, s => s.Id == id);
+                    if (subscriber != null)
+                    {
+                        return subscriber;
+                    }
+                }
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
+
+        public async Task<bool> DeleteOneSubscriber(int id)
+        {
+            try
+            {
+                if (await _subscriberRepository.Exists(s => s.Id == id))
+                {
+                    var result = await _subscriberRepository.DeleteFromDb(s => s.Id == id);
+                    if (result == true)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return false;
         }
     }
 }
