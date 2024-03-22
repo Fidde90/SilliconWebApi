@@ -10,6 +10,7 @@
 
         public string? Price { get; set; }
 
+        public string? Hours { get; set; }
         public string? PictureUrl { get; set; }
 
         public bool IsBestSeller { get; set; } = false;

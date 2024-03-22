@@ -10,8 +10,12 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+
 builder.Services.AddScoped<SubscriberRepository>();
 builder.Services.AddScoped<SubscriberService>();
+
+builder.Services.AddScoped<CourseRepository>();
+builder.Services.AddScoped<CourseService>();
 
 
 

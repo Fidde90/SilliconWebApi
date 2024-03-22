@@ -42,9 +42,7 @@ namespace Infrastructure.Services
             {
                 var subscribersList = await _subscriberRepository.GetAll();
                 if (subscribersList.Count() > 0)
-                {
                     return subscribersList;
-                }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
