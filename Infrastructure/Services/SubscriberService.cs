@@ -1,4 +1,5 @@
-﻿using Infrastructure.Entities;
+﻿using Infrastructure.Dtos;
+using Infrastructure.Entities;
 using Infrastructure.Repositories;
 using System.Diagnostics;
 
@@ -13,15 +14,15 @@ namespace Infrastructure.Services
             _subscriberRepository = repository;
         }
 
-        public async Task<SubscriberEntity> CreateSubscriberAsync(string email)
+        public async Task<SubscriberEntity> CreateSubscriberAsync(SubscriberDto subscriber)
         {
             try
             {
-                if (!await _subscriberRepository.Exists(x => x.Email == email))
+                if (!await _subscriberRepository.Exists(x => x.Email == subscriber.Email))
                 {
                     var newSubscriber = new SubscriberEntity
                     {
-                        Email = email
+                        Email = subscriber.Email
                     };
 
                     var created = await _subscriberRepository.AddToDb(newSubscriber);
@@ -42,9 +43,7 @@ namespace Infrastructure.Services
             {
                 var subscribersList = await _subscriberRepository.GetAll();
                 if (subscribersList.Count() > 0)
-                {
                     return subscribersList;
-                }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;

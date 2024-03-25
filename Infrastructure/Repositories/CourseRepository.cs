@@ -3,9 +3,8 @@ using Infrastructure.Entities;
 
 namespace Infrastructure.Repositories
 {
-    public class SubscriberRepository(DataContext dataContext) : BaseRepository<SubscriberEntity>(dataContext)
+    public class CourseRepository(DataContext dataContext) : BaseRepository<CourseEntity>(dataContext)
     {
         private readonly DataContext _dataContext = dataContext;
-
     }
 }
