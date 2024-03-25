@@ -1,4 +1,5 @@
-﻿using Infrastructure.Services;
+﻿using Infrastructure.Dtos;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
@@ -13,17 +14,17 @@ namespace SilliconWebApi.Controllers
 
         #region Create
         [HttpPost]
-        public async Task<IActionResult> Create(string email)
+        public async Task<IActionResult> Create(SubscriberDto subscriber)
         {
-            if (Regex.IsMatch(email, RegularEx))
+            if (Regex.IsMatch(subscriber.Email, RegularEx))
             {
-                var created = await _subscriberService.CreateSubscriberAsync(email);
-                
+                var created = await _subscriberService.CreateSubscriberAsync(subscriber);
+
                 if (created != null)
                     return Ok(created);
 
                 return Conflict("A subscriber with the email already exists.");
-            }      
+            }
             return BadRequest("Enter a vaild Email");
         }
         #endregion
