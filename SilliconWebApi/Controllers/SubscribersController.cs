@@ -55,11 +55,11 @@ namespace SilliconWebApi.Controllers
 
         #region Update
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateOne(int id, string email)
+        public async Task<IActionResult> UpdateOne(int id, string newEmail)
         {
-            if (!string.IsNullOrWhiteSpace(email) && Regex.IsMatch(email, RegularEx))
+            if (!string.IsNullOrWhiteSpace(newEmail) && Regex.IsMatch(newEmail, RegularEx))
             {
-                var subscribers = await _subscriberService.UpdateSubscriberAsync(id, email);
+                var subscribers = await _subscriberService.UpdateSubscriberAsync(id, newEmail);
 
                 if (subscribers != null)
                     return Ok(subscribers);

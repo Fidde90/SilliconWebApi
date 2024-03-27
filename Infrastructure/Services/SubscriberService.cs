@@ -63,18 +63,21 @@ namespace Infrastructure.Services
             return null!;
         }
 
-        public async Task<SubscriberEntity> UpdateSubscriberAsync(int id, string email)
+        public async Task<SubscriberEntity> UpdateSubscriberAsync(int id, string newEmail)
         {
             try
             {
-                if (await _subscriberRepository.Exists(s => s.Id == id) && !string.IsNullOrWhiteSpace(email))
+                if (await _subscriberRepository.Exists(s => s.Id == id) && !string.IsNullOrWhiteSpace(newEmail))
                 {
-                    var newSubscriberValues = new SubscriberEntity { Id = id, Email = email };
-                    var subscriber = await _subscriberRepository.UpdateEntity(newSubscriberValues, s => s.Id == id);
-                    if (subscriber != null)
+                    if(!await _subscriberRepository.Exists(s => s.Email == newEmail))
                     {
-                        return subscriber;
-                    }
+                        var newSubscriberValues = new SubscriberEntity { Id = id, Email = newEmail };
+                        var subscriber = await _subscriberRepository.UpdateEntity(newSubscriberValues, s => s.Id == id);
+                        if (subscriber != null)
+                        {
+                            return subscriber;
+                        }
+                    }              
                 }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
