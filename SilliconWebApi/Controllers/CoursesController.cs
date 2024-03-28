@@ -1,4 +1,5 @@
-﻿using Infrastructure.Services;
+﻿using Infrastructure.Dtos;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SilliconWebApi.Controllers
@@ -12,25 +13,34 @@ namespace SilliconWebApi.Controllers
 
         #region Create
         [HttpPost]
-        public async Task<IActionResult> CreateCourseAsync()
+        public async Task<IActionResult> CreateCourse(CourseDto newCourse)
         {
-            return Ok();
+            if (ModelState.IsValid)
+            {
+                var result = await _coursesService.CreateCourseAsync(newCourse);
+
+                if (result != null)
+                    return Ok();
+
+                return Conflict();
+            }
+            return BadRequest();
         }
         #endregion
 
         #region Get one/all
         [HttpGet]
-        public async Task<IActionResult> GetAllCoursesAsync()
+        public async Task<IActionResult> GetAllCourses()
         {
             var courseList = await _coursesService.GetAllCoursesAsync();
-            if(courseList != null)
+            if (courseList != null)
                 return Ok(courseList);
 
             return NotFound();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneCourseAsync(int id)
+        public async Task<IActionResult> GetOneCourse(int id)
         {
             var course = await _coursesService.GetOneCourseAsync(id);
             if (course != null)
