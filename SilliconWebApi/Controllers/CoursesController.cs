@@ -1,18 +1,21 @@
 ﻿using Infrastructure.Dtos;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SilliconWebApi.Filters;
 
 namespace SilliconWebApi.Controllers
 {
     [Route("api/[controller]")]
+    [UseApiKey]
     [ApiController]
     public class CoursesController(CourseService coursesService) : ControllerBase
     {
         public readonly CourseService _coursesService = coursesService;
 
-
         #region Create
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateCourse(CourseDto newCourse)
         {
             if (ModelState.IsValid)

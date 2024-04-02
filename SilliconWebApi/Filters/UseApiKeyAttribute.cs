@@ -10,7 +10,7 @@ namespace SilliconWebApi.Filters
         {
             //hämtar in appsettings.json filen
             var config = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-            var apiKey = config.GetValue<string>("ApiKey"); // hämtar upp nyckeln
+            var apiKey = config.GetValue<string>("ApiKey:Secret"); // hämtar upp nyckeln
 
             if(!context.HttpContext.Request.Query.TryGetValue("key", out var providedKey))
             {
