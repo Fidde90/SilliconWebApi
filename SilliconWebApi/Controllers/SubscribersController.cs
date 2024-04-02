@@ -1,12 +1,14 @@
 ﻿using Infrastructure.Dtos;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
+using SilliconWebApi.Filters;
 using System.Text.RegularExpressions;
 
 namespace SilliconWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [UseApiKey] //nyckeln vi gjorde
     public class SubscribersController(SubscriberService subscriberService) : ControllerBase
     {
         private readonly SubscriberService _subscriberService = subscriberService;
