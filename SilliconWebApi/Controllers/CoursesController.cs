@@ -3,6 +3,7 @@ using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SilliconWebApi.Filters;
+using System.Diagnostics;
 
 namespace SilliconWebApi.Controllers
 {
@@ -13,10 +14,32 @@ namespace SilliconWebApi.Controllers
     {
         public readonly CourseService _coursesService = coursesService;
 
-        #region Create
+        #region User actions
+        [HttpGet]
+        public async Task<IActionResult> GetAllCoursesAsync()
+        {
+            var courseList = await _coursesService.GetAllCoursesAsync();
+            if (courseList != null)
+                return Ok(courseList);
+
+            return NotFound();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOneCourseAsync(int id)
+        {
+            var course = await _coursesService.GetOneCourseAsync(id);
+            if (course != null)
+                return Ok(course);
+
+            return NotFound();
+        }
+        #endregion
+
+        #region Admin actions
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateCourse(CourseDto newCourse)
+        public async Task<IActionResult> CreateCourseAsync(CourseDto newCourse)
         {
             if (ModelState.IsValid)
             {
@@ -29,28 +52,40 @@ namespace SilliconWebApi.Controllers
             }
             return BadRequest();
         }
-        #endregion
 
-        #region Get one/all
-        [HttpGet]
-        public async Task<IActionResult> GetAllCourses()
+        [HttpPut]
+        public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto newModel)
         {
-            var courseList = await _coursesService.GetAllCoursesAsync();
-            if (courseList != null)
-                return Ok(courseList);
-
-            return NotFound();
+            try 
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await _coursesService.UpdateCourseAsync(newModel);
+                    if(result != null)
+                    {
+                        return Ok(result);
+                    }
+                    return NotFound();
+                }        
+            } 
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return BadRequest("Invalid information");
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOneCourse(int id)
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCourseAsync(int id)
         {
-            var course = await _coursesService.GetOneCourseAsync(id);
-            if (course != null)
-                return Ok(course);
-
-            return NotFound();
+            try
+            {
+                var result = await _coursesService.DeleteCourseAsync(id);
+                if (result == true)
+                    return Ok("Course deleted");
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return NotFound("Could not find any course with the given id.");
         }
         #endregion
+
     }
 }

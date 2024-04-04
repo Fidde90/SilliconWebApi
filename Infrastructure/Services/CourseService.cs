@@ -15,7 +15,7 @@ namespace Infrastructure.Services
         {
             try
             {
-                if(newCourse != null)
+                if (newCourse != null)
                 {
                     if (!await _courseRepository.Exists(course => course.Author == newCourse.Author && course.Title == newCourse.Title))
                     {
@@ -24,7 +24,7 @@ namespace Infrastructure.Services
                         if (result != null)
                             return course;
                     }
-                }            
+                }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
@@ -50,6 +50,37 @@ namespace Infrastructure.Services
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
+        }
+
+        public async Task<UpdateCourseDto> UpdateCourseAsync(UpdateCourseDto newValues)
+        {
+            try
+            {
+                if (newValues != null && await _courseRepository.Exists(c => c.Id == newValues.Id))
+                {
+                    var result = await _courseRepository.UpdateEntity(CourseAutoMapper.ToCourseEntity(newValues), c => c.Id == newValues.Id);
+                    if (result != null)
+                    {
+                        return CourseAutoMapper.ToUpdateCourseDto(result);
+                    }
+                }
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
+        public async Task<bool> DeleteCourseAsync(int id)
+        {
+            try
+            {
+                if (await _courseRepository.Exists(course => course.Id == id))
+                {
+                    var deleted = await _courseRepository.DeleteFromDb(course => course.Id == id);
+                    if (deleted)
+                        return true;
+                }
+            }
+            catch (Exception e) { Debug.WriteLine("Error: " + e.Message); }
+            return false;
         }
     }
 }

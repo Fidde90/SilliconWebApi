@@ -2,6 +2,7 @@
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using SilliconWebApi.Filters;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace SilliconWebApi.Controllers
@@ -16,71 +17,87 @@ namespace SilliconWebApi.Controllers
 
         #region Create
         [HttpPost]
-        public async Task<IActionResult> Create(SubscriberDto subscriber)
+        public async Task<IActionResult> CreateSubscriptionAsync(SubscriberDto subscriber)
         {
-            if (Regex.IsMatch(subscriber.Email, RegularEx))
+            try
             {
-                var created = await _subscriberService.CreateSubscriberAsync(subscriber);
+                if (Regex.IsMatch(subscriber.Email, RegularEx))
+                {
+                    var created = await _subscriberService.CreateSubscriberAsync(subscriber);
 
-                if (created != null)
-                    return Ok(created);
+                    if (created != null)
+                        return Ok(created);
 
-                return Conflict("A subscriber with the email already exists.");
+                    return Conflict("A subscriber with the email already exists.");
+                }
             }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }         
             return BadRequest("Enter a vaild Email");
         }
         #endregion
 
         #region Get All / One
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllSubscribersAsync()
         {
-            var subscribers = await _subscriberService.GetAllSubscribersAsync();
-
-            if(subscribers != null)
-                return Ok(subscribers);
-
+            try
+            {
+                var subscribers = await _subscriberService.GetAllSubscribersAsync();
+                if (subscribers != null)
+                    return Ok(subscribers);
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return NotFound();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOne(int id)
+        public async Task<IActionResult> GetOneSubscriberAsync(int id)
         {
-            var subscribers = await _subscriberService.GetOneSubscriberAsync(id);
+            try
+            {
+                var subscribers = await _subscriberService.GetOneSubscriberAsync(id);
 
-            if (subscribers != null)
-                return Ok(subscribers);
-
+                if (subscribers != null)
+                    return Ok(subscribers);
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return NotFound();
         }
         #endregion
 
         #region Update
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateOne(int id, string newEmail)
+        public async Task<IActionResult> UpdateOneSubscriberAsync(int id, string newEmail)
         {
-            if (!string.IsNullOrWhiteSpace(newEmail) && Regex.IsMatch(newEmail, RegularEx))
+            try
             {
-                var subscribers = await _subscriberService.UpdateSubscriberAsync(id, newEmail);
+                if (!string.IsNullOrWhiteSpace(newEmail) && Regex.IsMatch(newEmail, RegularEx))
+                {
+                    var subscribers = await _subscriberService.UpdateSubscriberAsync(id, newEmail);
 
-                if (subscribers != null)
-                    return Ok(subscribers);
+                    if (subscribers != null)
+                        return Ok(subscribers);
 
-                return NotFound();
+                    return NotFound();
+                }
             }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return BadRequest("Enter a vaild email.");
         }
         #endregion
 
         #region Delete
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOne(int id)
+        public async Task<IActionResult> DeleteOneSubscriberAsync(int id)
         {
-            var result = await _subscriberService.DeleteOneSubscriber(id);
-            if(result == true)            
-                return Ok("Subscrition deleted");
-
-            return NotFound("Could not find anyone with the given id.");
+            try
+            {
+                var result = await _subscriberService.DeleteOneSubscriber(id);
+                if (result == true)
+                    return Ok("Subscription deleted");
+            }
+            catch (Exception e) { Debug.WriteLine("Error: " + e.Message); }
+            return NotFound("Could not find a subscription with given id.");
         }
         #endregion
     }

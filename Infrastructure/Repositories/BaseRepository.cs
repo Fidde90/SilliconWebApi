@@ -5,14 +5,9 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
 {
-    public abstract class BaseRepository<TEntity> where TEntity : class
+    public abstract class BaseRepository<TEntity>(DataContext dataContext) where TEntity : class
     {
-        private readonly DataContext _dataContext;
-
-        public BaseRepository(DataContext dataContext)
-        {
-            _dataContext = dataContext;
-        }
+        private readonly DataContext _dataContext = dataContext;
 
         public virtual async Task<TEntity> AddToDb(TEntity entity)
         {
