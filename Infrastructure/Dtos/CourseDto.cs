@@ -24,6 +24,6 @@ namespace Infrastructure.Dtos
 
         public string? DiscountPrice { get; set; }
 
-        public CategoryEntity? Category { get; set; }
+        public CategoryDto? Category { get; set; }
     }
 }

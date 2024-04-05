@@ -62,7 +62,6 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
-
         public async Task<UpdateCourseDto> UpdateCourseAsync(UpdateCourseDto newValues)
         {
             try

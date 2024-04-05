@@ -18,14 +18,23 @@ namespace SilliconWebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCoursesAsync()
         {
+            var response = new CourseResult();
+
             try
             {
                 var courseList = await _coursesService.GetAllCoursesAsync();
+             
                 if (courseList != null)
-                    return Ok(courseList);
+                {
+                    response.Courses = courseList;
+                    response.Succeeded = true;
+                    return Ok(response);
+                }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
-            return NotFound();
+            response.Courses = null;
+            response.Succeeded = false;
+            return NotFound(response);
         }
 
         [HttpGet("{id}")]
@@ -59,18 +68,18 @@ namespace SilliconWebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto newModel)
         {
-            try 
+            try
             {
                 if (ModelState.IsValid)
                 {
                     var result = await _coursesService.UpdateCourseAsync(newModel);
-                    if(result != null)
+                    if (result != null)
                     {
                         return Ok(result);
                     }
                     return NotFound();
-                }        
-            } 
+                }
+            }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return BadRequest("Invalid information");
         }

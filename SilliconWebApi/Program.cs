@@ -30,6 +30,9 @@ builder.Services.AddScoped<SubscriberService>();
 builder.Services.AddScoped<CourseRepository>();
 builder.Services.AddScoped<CourseService>();
 
+builder.Services.AddScoped<CategoryRepository>();
+builder.Services.AddScoped<CategoryService>();
+
 var app = builder.Build();
 
 // allowanyheaders innebär tex att man kan använda alla olika contenttypes eller keys osv..

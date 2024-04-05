@@ -31,5 +31,25 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+
+        public async Task<bool> CreateCategory(CreateCategoryDto newCategory)
+        {
+            if(newCategory != null)
+            {
+                try
+                {
+                    if(!await _categoryRepository.Exists(c => c.CategoryName == newCategory.CategoryName))
+                    {
+                        var category = CategoryAutoMapper.ToCategoryEntity(newCategory);
+                        var created = _categoryRepository.AddToDb(category);
+
+                        if (created != null)
+                            return true;
+                    }                
+                }
+                catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            }
+            return false;
+        }
     }
 }

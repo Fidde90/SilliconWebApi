@@ -19,5 +19,34 @@ namespace Infrastructure.Factories
             }
             return null!;
         }
+
+        public static CategoryEntity ToCategoryEntity(CategoryDto dto)
+        {
+            if (dto != null)
+            {
+                var newEntity = new CategoryEntity
+                {
+                    Id = dto.Id,
+                    CategoryName = dto.CategoryName
+                };
+
+                return newEntity;
+            }
+            return null!;
+        }
+
+        public static CategoryEntity ToCategoryEntity(CreateCategoryDto dto)
+        {
+            if (dto != null)
+            {
+                var newEntity = new CategoryEntity
+                {             
+                    CategoryName = dto.CategoryName
+                };
+
+                return newEntity;
+            }
+            return null!;
+        }
     }
 }
