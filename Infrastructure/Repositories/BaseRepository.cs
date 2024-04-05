@@ -21,6 +21,10 @@ namespace Infrastructure.Repositories
             return null!;
         }
 
+        /// <summary>
+        ///     Gets all entities of a given type from the database, as a IEnumerable list.
+        /// </summary>
+        /// <returns>returns a IEnumerable list</returns>
         public virtual async Task<IEnumerable<TEntity>> GetAll()
         {
             try

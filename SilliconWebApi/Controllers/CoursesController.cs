@@ -18,10 +18,13 @@ namespace SilliconWebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCoursesAsync()
         {
-            var courseList = await _coursesService.GetAllCoursesAsync();
-            if (courseList != null)
-                return Ok(courseList);
-
+            try
+            {
+                var courseList = await _coursesService.GetAllCoursesAsync();
+                if (courseList != null)
+                    return Ok(courseList);
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return NotFound();
         }
 
@@ -86,6 +89,5 @@ namespace SilliconWebApi.Controllers
             return NotFound("Could not find any course with the given id.");
         }
         #endregion
-
     }
 }

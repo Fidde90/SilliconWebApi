@@ -5,6 +5,30 @@ namespace Infrastructure.Factories
 {
     public class CourseAutoMapper
     {
+        public static CourseDto ToCourseDto(CourseEntity entity)
+        {
+            if (entity != null)
+            {
+                var Dto = new CourseDto
+                {
+                    Id = entity.Id,
+                    Title = entity.Title,
+                    Author = entity.Author, 
+                    Price = entity.Price,
+                    Hours = entity.Hours,
+                    PictureUrl = entity.PictureUrl,
+                    IsBestSeller = entity.IsBestSeller,
+                    LikesInNumbers = entity.LikesInNumbers,
+                    LikesInProcent = entity.LikesInProcent,
+                    DiscountPrice = entity.DiscountPrice,
+                    Category = entity.Category
+                };
+
+                return Dto;
+            }
+            return null!;
+        }
+
         public static CourseEntity ToCourseEntity(CourseDto dto)
         {
             if(dto != null)
@@ -16,10 +40,11 @@ namespace Infrastructure.Factories
                     Price = dto.Price,
                     Hours = dto.Hours,
                     PictureUrl = dto.PictureUrl,
-                    IsBestSeller = bool.Parse(dto.IsBestSeller!),
+                    IsBestSeller = dto.IsBestSeller!,
                     LikesInNumbers = dto.LikesInNumbers,
                     LikesInProcent = dto.LikesInProcent,
-                    DiscountPrice = dto.DiscountPrice
+                    DiscountPrice = dto.DiscountPrice,
+                    Category = dto.Category
                 };
 
                 return newEntity;
@@ -39,10 +64,12 @@ namespace Infrastructure.Factories
                     Price = dto.Price,
                     Hours = dto.Hours,
                     PictureUrl = dto.PictureUrl,
-                    IsBestSeller = bool.Parse(dto.IsBestSeller!),
+                    IsBestSeller = dto.IsBestSeller!,
                     LikesInNumbers = dto.LikesInNumbers,
                     LikesInProcent = dto.LikesInProcent,
-                    DiscountPrice = dto.DiscountPrice
+                    DiscountPrice = dto.DiscountPrice,
+                    LastUpdated = dto.LastUpdated,
+                    Category = dto.Category
                 };
 
                 return newEntity;
@@ -62,10 +89,12 @@ namespace Infrastructure.Factories
                     Price = entity.Price,
                     Hours = entity.Hours!,
                     PictureUrl = entity.PictureUrl!,
-                    IsBestSeller = entity.IsBestSeller.ToString(),
+                    IsBestSeller = entity.IsBestSeller!,
                     LikesInNumbers = entity.LikesInNumbers,
                     LikesInProcent = entity.LikesInProcent,
-                    DiscountPrice = entity.DiscountPrice
+                    DiscountPrice = entity.DiscountPrice,
+                    LastUpdated = entity.LastUpdated,
+                    Category = entity.Category
                 };
 
                 return newDto;

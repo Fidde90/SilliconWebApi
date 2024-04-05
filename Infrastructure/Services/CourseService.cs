@@ -29,13 +29,24 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
-        public async Task<IEnumerable<CourseEntity>> GetAllCoursesAsync()
+        public async Task<IEnumerable<CourseDto>> GetAllCoursesAsync()
         {
+            List<CourseDto> Dtos = [];
+
             try
             {
-                var courseList = await _courseRepository.GetAll();
-                if (courseList.Count() > 0)
-                    return courseList;
+                var courseEntities = await _courseRepository.GetAll();
+
+                if (courseEntities.Any())
+                {
+                    foreach (var entity in courseEntities)
+                    {
+                        var course = CourseAutoMapper.ToCourseDto(entity);
+                        Dtos.Add(course);
+                    }
+
+                    return Dtos;
+                }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
