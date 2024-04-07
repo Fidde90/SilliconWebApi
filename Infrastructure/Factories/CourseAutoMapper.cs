@@ -21,7 +21,7 @@ namespace Infrastructure.Factories
                     LikesInNumbers = entity.LikesInNumbers,
                     LikesInProcent = entity.LikesInProcent,
                     DiscountPrice = entity.DiscountPrice,
-                    Category = CategoryAutoMapper.ToCategoryDto(entity.Category!)
+                    Category = entity.Category
                 };
 
                 return Dto;
@@ -44,7 +44,7 @@ namespace Infrastructure.Factories
                     LikesInNumbers = dto.LikesInNumbers,
                     LikesInProcent = dto.LikesInProcent,
                     DiscountPrice = dto.DiscountPrice,
-                    Category = CategoryAutoMapper.ToCategoryEntity(dto.Category!)
+                    Category = dto.Category
                 };
 
                 return newEntity;
@@ -69,7 +69,7 @@ namespace Infrastructure.Factories
                     LikesInProcent = dto.LikesInProcent,
                     DiscountPrice = dto.DiscountPrice,
                     LastUpdated = dto.LastUpdated,
-                    Category = CategoryAutoMapper.ToCategoryEntity(dto.Category!)
+                    Category = dto.Category
                 };
 
                 return newEntity;
@@ -94,7 +94,7 @@ namespace Infrastructure.Factories
                     LikesInProcent = entity.LikesInProcent,
                     DiscountPrice = entity.DiscountPrice,
                     LastUpdated = entity.LastUpdated,
-                    Category = CategoryAutoMapper.ToCategoryDto(entity.Category!)
+                    Category = entity.Category
                 };
 
                 return newDto;

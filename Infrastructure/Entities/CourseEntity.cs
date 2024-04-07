@@ -31,6 +31,6 @@ namespace Infrastructure.Entities
 
         public int? CategoryId { get; set; }
 
-        public CategoryEntity? Category { get; set; }
+        public string Category { get; set; } = null!;
     }
 }
