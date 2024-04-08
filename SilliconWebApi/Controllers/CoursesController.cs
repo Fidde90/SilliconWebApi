@@ -8,11 +8,12 @@ using System.Diagnostics;
 namespace SilliconWebApi.Controllers
 {
     [Route("api/[controller]")]
-    [UseApiKey]
+    //[UseApiKey]
     [ApiController]
     public class CoursesController(CourseService coursesService) : ControllerBase
     {
-        public readonly CourseService _coursesService = coursesService;
+        private readonly CourseService _coursesService = coursesService;
+
 
         #region User actions
         [HttpGet]
@@ -23,7 +24,7 @@ namespace SilliconWebApi.Controllers
             try
             {
                 var courseList = await _coursesService.GetAllCoursesAsync();
-             
+
                 if (courseList != null)
                 {
                     response.Courses = courseList;
@@ -51,11 +52,11 @@ namespace SilliconWebApi.Controllers
         #region Admin actions
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateCourseAsync(CourseDto newCourse)
+        public async Task<IActionResult> CreateCourseAsync(CourseDto newCourse, string categoryName)
         {
             if (ModelState.IsValid)
             {
-                var result = await _coursesService.CreateCourseAsync(newCourse);
+                var result = await _coursesService.CreateCourseAsync(newCourse, categoryName);
 
                 if (result != null)
                     return Ok();
@@ -66,13 +67,13 @@ namespace SilliconWebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto newModel)
+        public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto newModel, string categoryName)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _coursesService.UpdateCourseAsync(newModel);
+                    var result = await _coursesService.UpdateCourseAsync(newModel, categoryName);
                     if (result != null)
                     {
                         return Ok(result);

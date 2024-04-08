@@ -22,8 +22,6 @@ namespace Infrastructure.Dtos
 
         public bool IsBestSeller { get; set; } = false;
 
-        public bool IsBestseller { get; set; } = false;
-
         public string? PictureUrl { get; set; }
 
         public string Category { get; set; } = null!;

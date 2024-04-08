@@ -1,10 +1,13 @@
 ﻿using Infrastructure.Dtos;
 using Infrastructure.Entities;
+using Infrastructure.Services;
 
 namespace Infrastructure.Factories
 {
-    public class CourseAutoMapper
+    public class CourseAutoMapper(CategoryService categoryService)
     {
+        private readonly CategoryService _categoryService = categoryService;
+
         public static CourseDto ToCourseDto(CourseEntity entity)
         {
             if (entity != null)
@@ -13,7 +16,7 @@ namespace Infrastructure.Factories
                 {
                     Id = entity.Id,
                     Title = entity.Title,
-                    Author = entity.Author, 
+                    Author = entity.Author,
                     Price = entity.Price,
                     Hours = entity.Hours,
                     PictureUrl = entity.PictureUrl,
@@ -21,7 +24,7 @@ namespace Infrastructure.Factories
                     LikesInNumbers = entity.LikesInNumbers,
                     LikesInProcent = entity.LikesInProcent,
                     DiscountPrice = entity.DiscountPrice,
-                    Category = entity.Category
+                    Category = entity.Category!.CategoryName
                 };
 
                 return Dto;
@@ -29,9 +32,9 @@ namespace Infrastructure.Factories
             return null!;
         }
 
-        public static CourseEntity ToCourseEntity(CourseDto dto)
+        public static CourseEntity ToCourseEntity(CourseDto dto, int categoryId)
         {
-            if(dto != null)
+            if (dto != null)
             {
                 var newEntity = new CourseEntity
                 {
@@ -44,7 +47,7 @@ namespace Infrastructure.Factories
                     LikesInNumbers = dto.LikesInNumbers,
                     LikesInProcent = dto.LikesInProcent,
                     DiscountPrice = dto.DiscountPrice,
-                    Category = dto.Category
+                    CategoryId = categoryId
                 };
 
                 return newEntity;
@@ -52,7 +55,7 @@ namespace Infrastructure.Factories
             return null!;
         }
 
-        public static CourseEntity ToCourseEntity(UpdateCourseDto dto)
+        public static CourseEntity ToCourseEntity(UpdateCourseDto dto, int categoryId)
         {
             if (dto != null)
             {
@@ -69,7 +72,7 @@ namespace Infrastructure.Factories
                     LikesInProcent = dto.LikesInProcent,
                     DiscountPrice = dto.DiscountPrice,
                     LastUpdated = dto.LastUpdated,
-                    Category = dto.Category
+                    CategoryId = categoryId
                 };
 
                 return newEntity;
@@ -77,7 +80,7 @@ namespace Infrastructure.Factories
             return null!;
         }
 
-        public static UpdateCourseDto ToUpdateCourseDto(CourseEntity entity)
+        public static UpdateCourseDto ToUpdateCourseDto(CourseEntity entity, int categoryId)
         {
             if (entity != null)
             {
@@ -94,7 +97,7 @@ namespace Infrastructure.Factories
                     LikesInProcent = entity.LikesInProcent,
                     DiscountPrice = entity.DiscountPrice,
                     LastUpdated = entity.LastUpdated,
-                    Category = entity.Category
+                    CategoryId = categoryId
                 };
 
                 return newDto;

@@ -7,11 +7,11 @@ using System.Diagnostics;
 
 namespace Infrastructure.Services
 {
-    public class CourseService(CourseRepository coursesRepository)
+    public class CourseService(CourseRepository coursesRepository, CategoryService categoryService)
     {
         private readonly CourseRepository _courseRepository = coursesRepository;
-
-        public async Task<CourseEntity> CreateCourseAsync(CourseDto newCourse)
+        private readonly CategoryService _categoryService = categoryService;
+        public async Task<CourseEntity> CreateCourseAsync(CourseDto newCourse, string categoryName)
         {
             try
             {
@@ -19,7 +19,8 @@ namespace Infrastructure.Services
                 {
                     if (!await _courseRepository.Exists(course => course.Author == newCourse.Author && course.Title == newCourse.Title))
                     {
-                        var course = CourseAutoMapper.ToCourseEntity(newCourse);
+                        var category = await _categoryService.GetCategoryEntity(categoryName);
+                        var course = CourseAutoMapper.ToCourseEntity(newCourse, category.Id);
                         var result = await _courseRepository.AddToDb(course);
                         if (result != null)
                             return course;
@@ -62,16 +63,17 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
-        public async Task<UpdateCourseDto> UpdateCourseAsync(UpdateCourseDto newValues)
+        public async Task<UpdateCourseDto> UpdateCourseAsync(UpdateCourseDto newValues, string categoryName)
         {
             try
             {
                 if (newValues != null && await _courseRepository.Exists(c => c.Id == newValues.Id))
-                {
-                    var result = await _courseRepository.UpdateEntity(CourseAutoMapper.ToCourseEntity(newValues), c => c.Id == newValues.Id);
+                {              
+                    var category = await _categoryService.GetCategoryEntity(categoryName);
+                    var result = await _courseRepository.UpdateEntity(CourseAutoMapper.ToCourseEntity(newValues, category.Id), c => c.Id == newValues.Id);
                     if (result != null)
                     {
-                        return CourseAutoMapper.ToUpdateCourseDto(result);
+                        return CourseAutoMapper.ToUpdateCourseDto(result, category.Id);
                     }
                 }
             }

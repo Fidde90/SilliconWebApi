@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Dtos;
+using Infrastructure.Entities;
 using Infrastructure.Factories;
 using Infrastructure.Repositories;
 using System.Diagnostics;
@@ -26,6 +27,20 @@ namespace Infrastructure.Services
                     }
 
                     return Dtos;
+                }
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
+
+        public async Task<CategoryEntity> GetCategoryEntity(string categoryName)
+        {
+            try
+            {
+                if (await _categoryRepository.Exists(c => c.CategoryName == categoryName))
+                {
+                    var category = await _categoryRepository.GetOne(c => c.CategoryName == categoryName);
+                    return category;
                 }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
