@@ -52,11 +52,11 @@ namespace SilliconWebApi.Controllers
         #region Admin actions
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateCourseAsync(CourseDto newCourse, string categoryName)
+        public async Task<IActionResult> CreateCourseAsync(CourseDto newCourse)
         {
             if (ModelState.IsValid)
             {
-                var result = await _coursesService.CreateCourseAsync(newCourse, categoryName);
+                var result = await _coursesService.CreateCourseAsync(newCourse, newCourse.Category);
 
                 if (result != null)
                     return Ok();
