@@ -17,13 +17,13 @@ namespace SilliconWebApi.Controllers
 
         #region User actions
         [HttpGet]
-        public async Task<IActionResult> GetAllCoursesAsync()
+        public async Task<IActionResult> GetAllCoursesAsync(string category = "", string searchValue = "")
         {
             var response = new CourseResult();
 
             try
             {
-                var courseList = await _coursesService.GetAllCoursesAsync();
+                var courseList = await _coursesService.GetAllCoursesAsync(category, searchValue);
 
                 if (courseList != null)
                 {
@@ -35,7 +35,7 @@ namespace SilliconWebApi.Controllers
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             response.Courses = null;
             response.Succeeded = false;
-            return NotFound(response);
+            return NotFound(response); // kolla in detta senare?
         }
 
         [HttpGet("{id}")]

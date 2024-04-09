@@ -30,13 +30,13 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
-        public async Task<IEnumerable<CourseDto>> GetAllCoursesAsync()
+        public async Task<IEnumerable<CourseDto>> GetAllCoursesAsync(string category ="", string searchValue = "")
         {
             List<CourseDto> Dtos = [];
 
             try
             {
-                var courseEntities = await _courseRepository.GetAll();
+                var courseEntities = await _courseRepository.GetAll(category, searchValue);
 
                 if (courseEntities.Any())
                 {
