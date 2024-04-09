@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Dtos
 {
-    public class CourseDto
+    public class UpdateCourseDto
     {
         public int Id { get; set; }
 
@@ -12,18 +12,20 @@ namespace Infrastructure.Dtos
 
         public string? Price { get; set; }
 
-        public string? DiscountPrice { get; set; }
-
         public string? Hours { get; set; }
+
+        public string? PictureUrl { get; set; }
+
+        public bool IsBestSeller { get; set; } = false;
 
         public string? LikesInNumbers { get; set; }
 
         public string? LikesInProcent { get; set; }
 
-        public bool IsBestSeller { get; set; } = false;
+        public string? DiscountPrice { get; set; }
 
-        public string? PictureUrl { get; set; }
+        public DateTime LastUpdated { get; set; }
 
-        public string Category { get; set; } = null!;
+        public int CategoryId { get; set; }
     }
 }

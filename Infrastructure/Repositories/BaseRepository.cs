@@ -5,14 +5,9 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
 {
-    public abstract class BaseRepository<TEntity> where TEntity : class
+    public abstract class BaseRepository<TEntity>(DataContext dataContext) where TEntity : class
     {
-        private readonly DataContext _dataContext;
-
-        public BaseRepository(DataContext dataContext)
-        {
-            _dataContext = dataContext;
-        }
+        private readonly DataContext _dataContext = dataContext;
 
         public virtual async Task<TEntity> AddToDb(TEntity entity)
         {
@@ -26,6 +21,10 @@ namespace Infrastructure.Repositories
             return null!;
         }
 
+        /// <summary>
+        ///     Gets all entities of a given type from the database, as a IEnumerable list.
+        /// </summary>
+        /// <returns>returns a IEnumerable list</returns>
         public virtual async Task<IEnumerable<TEntity>> GetAll()
         {
             try
