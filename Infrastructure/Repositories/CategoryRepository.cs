@@ -14,7 +14,7 @@ namespace Infrastructure.Repositories
         ///     Gets all categories from the database, as a IEnumerable list.
         /// </summary>
         /// <returns>returns an orderd list by categoryname</returns>
-        public async override Task<IEnumerable<CategoryEntity>> GetAll(string category = "", string searchValue = "")
+        public async override Task<IEnumerable<CategoryEntity>> GetAll()
         {
             try
             {

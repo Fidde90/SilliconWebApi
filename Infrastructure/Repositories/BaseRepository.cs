@@ -25,6 +25,17 @@ namespace Infrastructure.Repositories
         ///     Gets all entities of a given type from the database, as a IEnumerable list.
         /// </summary>
         /// <returns>returns a IEnumerable list</returns>
+        public virtual async Task<IEnumerable<TEntity>> GetAll()
+        {
+            try
+            {
+                var list = await _dataContext.Set<TEntity>().ToListAsync();
+                if (list.Count > 0)
+                    return list;
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
         public virtual async Task<IEnumerable<TEntity>> GetAll(string categoty = "", string searchValue = "")
         {
             try

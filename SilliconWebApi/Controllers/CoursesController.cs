@@ -67,13 +67,13 @@ namespace SilliconWebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto newModel, string categoryName)
+        public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto newModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _coursesService.UpdateCourseAsync(newModel, categoryName);
+                    var result = await _coursesService.UpdateCourseAsync(newModel);
                     if (result != null)
                     {
                         return Ok(result);
