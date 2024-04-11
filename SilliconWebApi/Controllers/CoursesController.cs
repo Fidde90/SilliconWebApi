@@ -2,7 +2,6 @@
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SilliconWebApi.Filters;
 using System.Diagnostics;
 
 namespace SilliconWebApi.Controllers
@@ -17,25 +16,21 @@ namespace SilliconWebApi.Controllers
 
         #region User actions
         [HttpGet]
-        public async Task<IActionResult> GetAllCoursesAsync(string category = "", string searchValue = "")
+        public async Task<IActionResult> GetAllCoursesAsync(string category = "", string searchValue = "", int pageNumber = 1, int pageSize = 10)
         {
             var response = new CourseResult();
 
             try
             {
-                var courseList = await _coursesService.GetAllCoursesAsync(category, searchValue);
-
-                if (courseList != null)
+                var courseResponse = await _coursesService.GetAllCoursesAsync(category, searchValue, pageNumber, pageSize);
+                courseResponse.Category = category;
+                if (courseResponse != null)
                 {
-                    response.Courses = courseList;
-                    response.Succeeded = true;
-                    return Ok(response);
+                    return Ok(courseResponse);
                 }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
-            response.Courses = null;
-            response.Succeeded = false;
-            return NotFound(response); // kolla in detta senare?
+            return NotFound(); // kolla in detta senare?
         }
 
         [HttpGet("{id}")]

@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories
     {
         private readonly DataContext _dataContext = dataContext;
 
-        public async override Task<IEnumerable<CourseEntity>> GetAll(string category ="", string searchValue = "")
+        public async override Task<IEnumerable<CourseEntity>> GetAll(string category = "", string searchValue = "")
         {
             try
             {

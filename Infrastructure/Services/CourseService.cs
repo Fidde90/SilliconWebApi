@@ -30,10 +30,10 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
-        public async Task<IEnumerable<CourseDto>> GetAllCoursesAsync(string category ="", string searchValue = "")
+        public async Task<CourseResult> GetAllCoursesAsync(string category = "", string searchValue = "", int pageNumber = 1, int pageSize = 10)
         {
-            List<CourseDto> Dtos = [];
-
+            List<CourseDto> courseList = [];
+            var response = new CourseResult();
             try
             {
                 var courseEntities = await _courseRepository.GetAll(category, searchValue);
@@ -43,10 +43,14 @@ namespace Infrastructure.Services
                     foreach (var entity in courseEntities)
                     {
                         var course = CourseAutoMapper.ToCourseDto(entity);
-                        Dtos.Add(course);
+                        courseList.Add(course);
                     }
 
-                    return Dtos;
+                    response.Succeeded = true;
+                    response.TotalItems = courseEntities.Count();
+                    response.TotalPages = (int)Math.Ceiling(response.TotalItems / (double)pageSize);
+                    response.Courses = courseList.Skip((pageNumber -1) * pageSize).Take(pageSize).ToList();
+                    return response;
                 }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
@@ -68,9 +72,9 @@ namespace Infrastructure.Services
             try
             {
                 if (newValues != null && await _courseRepository.Exists(c => c.Id == newValues.Id))
-                {              
+                {
                     var category = await _categoryService.GetCategoryEntity(newValues.Category!);
-                    if(category != null)
+                    if (category != null)
                     {
                         var result = await _courseRepository.UpdateEntity(CourseAutoMapper.ToCourseEntity(newValues, category.Id), c => c.Id == newValues.Id);
                         if (result != null)
