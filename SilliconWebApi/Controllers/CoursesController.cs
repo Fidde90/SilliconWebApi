@@ -23,7 +23,9 @@ namespace SilliconWebApi.Controllers
             try
             {
                 var courseResponse = await _coursesService.GetAllCoursesAsync(category, searchValue, pageNumber, pageSize);
-                courseResponse.Category = category;
+                if (!string.IsNullOrEmpty(category))
+                    courseResponse.Category = category;
+
                 if (courseResponse != null)
                 {
                     return Ok(courseResponse);
