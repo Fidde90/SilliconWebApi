@@ -56,7 +56,7 @@ namespace Infrastructure.Services
                     if(!await _categoryRepository.Exists(c => c.CategoryName == newCategory.CategoryName))
                     {
                         var category = CategoryAutoMapper.ToCategoryEntity(newCategory);
-                        var created = _categoryRepository.AddToDb(category);
+                        var created = await _categoryRepository.AddToDb(category);
 
                         if (created != null)
                             return true;

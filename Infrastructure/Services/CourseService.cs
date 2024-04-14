@@ -30,23 +30,27 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
-        public async Task<IEnumerable<CourseDto>> GetAllCoursesAsync()
+        public async Task<CourseResult> GetAllCoursesAsync(string category = "", string searchValue = "", int pageNumber = 1, int pageSize = 10)
         {
-            List<CourseDto> Dtos = [];
-
+            List<CourseDto> courseList = [];
+            var response = new CourseResult();
             try
             {
-                var courseEntities = await _courseRepository.GetAll();
+                var courseEntities = await _courseRepository.GetAll(category, searchValue);
 
                 if (courseEntities.Any())
                 {
                     foreach (var entity in courseEntities)
                     {
                         var course = CourseAutoMapper.ToCourseDto(entity);
-                        Dtos.Add(course);
+                        courseList.Add(course);
                     }
 
-                    return Dtos;
+                    response.Succeeded = true;
+                    response.TotalItems = courseEntities.Count();
+                    response.TotalPages = (int)Math.Ceiling(response.TotalItems / (double)pageSize);
+                    response.Courses = courseList.Skip((pageNumber -1) * pageSize).Take(pageSize).ToList();
+                    return response;
                 }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
@@ -63,17 +67,20 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
-        public async Task<UpdateCourseDto> UpdateCourseAsync(UpdateCourseDto newValues, string categoryName)
+        public async Task<UpdateCourseDto> UpdateCourseAsync(UpdateCourseDto newValues)
         {
             try
             {
                 if (newValues != null && await _courseRepository.Exists(c => c.Id == newValues.Id))
-                {              
-                    var category = await _categoryService.GetCategoryEntity(categoryName);
-                    var result = await _courseRepository.UpdateEntity(CourseAutoMapper.ToCourseEntity(newValues, category.Id), c => c.Id == newValues.Id);
-                    if (result != null)
+                {
+                    var category = await _categoryService.GetCategoryEntity(newValues.Category!);
+                    if (category != null)
                     {
-                        return CourseAutoMapper.ToUpdateCourseDto(result, category.Id);
+                        var result = await _courseRepository.UpdateEntity(CourseAutoMapper.ToCourseEntity(newValues, category.Id), c => c.Id == newValues.Id);
+                        if (result != null)
+                        {
+                            return CourseAutoMapper.ToUpdateCourseDto(result, category.Id);
+                        }
                     }
                 }
             }

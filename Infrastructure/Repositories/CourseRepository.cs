@@ -9,11 +9,18 @@ namespace Infrastructure.Repositories
     {
         private readonly DataContext _dataContext = dataContext;
 
-        public async override Task<IEnumerable<CourseEntity>> GetAll()
+        public async override Task<IEnumerable<CourseEntity>> GetAll(string category = "", string searchValue = "")
         {
             try
             {
                 var query = _dataContext.Courses.Include(c => c.Category).AsQueryable(); //inkluderar categorierna och gör den frågbar
+
+                if (!string.IsNullOrWhiteSpace(category) && category != "all")
+                    query = query.Where(c => c.Category!.CategoryName == category);
+
+                if (!string.IsNullOrWhiteSpace(searchValue) && searchValue != "all")
+                    query = query.Where(x => x.Title.Contains(searchValue) || x.Author!.Contains(searchValue) || x.Price!.Contains(searchValue));
+
                 query = query.OrderByDescending(o => o.LastUpdated); // sorterar den efter senast uppdaterad
                 var courses = await query.ToListAsync(); //blir sedan en lista
                 if (courses.Count > 0)

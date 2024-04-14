@@ -27,5 +27,7 @@ namespace Infrastructure.Dtos
         public DateTime LastUpdated { get; set; }
 
         public int CategoryId { get; set; }
+
+        public string? Category { get; set; }
     }
 }

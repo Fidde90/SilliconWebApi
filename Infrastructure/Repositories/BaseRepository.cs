@@ -36,6 +36,17 @@ namespace Infrastructure.Repositories
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+        public virtual async Task<IEnumerable<TEntity>> GetAll(string categoty = "", string searchValue = "")
+        {
+            try
+            {
+                var list = await _dataContext.Set<TEntity>().ToListAsync();
+                if (list.Count > 0)
+                    return list;
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
 
         public virtual async Task<TEntity> GetOne(Expression<Func<TEntity, bool>> predicate)
         {

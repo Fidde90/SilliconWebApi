@@ -2,7 +2,6 @@
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SilliconWebApi.Filters;
 using System.Diagnostics;
 
 namespace SilliconWebApi.Controllers
@@ -17,25 +16,23 @@ namespace SilliconWebApi.Controllers
 
         #region User actions
         [HttpGet]
-        public async Task<IActionResult> GetAllCoursesAsync()
+        public async Task<IActionResult> GetAllCoursesAsync(string category = "", string searchValue = "", int pageNumber = 1, int pageSize = 10)
         {
             var response = new CourseResult();
 
             try
             {
-                var courseList = await _coursesService.GetAllCoursesAsync();
+                var courseResponse = await _coursesService.GetAllCoursesAsync(category, searchValue, pageNumber, pageSize);
+                if (!string.IsNullOrEmpty(category))
+                    courseResponse.Category = category;
 
-                if (courseList != null)
+                if (courseResponse != null)
                 {
-                    response.Courses = courseList;
-                    response.Succeeded = true;
-                    return Ok(response);
+                    return Ok(courseResponse);
                 }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
-            response.Courses = null;
-            response.Succeeded = false;
-            return NotFound(response);
+            return NotFound(); // kolla in detta senare?
         }
 
         [HttpGet("{id}")]
@@ -52,11 +49,11 @@ namespace SilliconWebApi.Controllers
         #region Admin actions
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateCourseAsync(CourseDto newCourse, string categoryName)
+        public async Task<IActionResult> CreateCourseAsync(CourseDto newCourse)
         {
             if (ModelState.IsValid)
             {
-                var result = await _coursesService.CreateCourseAsync(newCourse, categoryName);
+                var result = await _coursesService.CreateCourseAsync(newCourse, newCourse.Category);
 
                 if (result != null)
                     return Ok();
@@ -67,13 +64,13 @@ namespace SilliconWebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto newModel, string categoryName)
+        public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto newModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _coursesService.UpdateCourseAsync(newModel, categoryName);
+                    var result = await _coursesService.UpdateCourseAsync(newModel);
                     if (result != null)
                     {
                         return Ok(result);
