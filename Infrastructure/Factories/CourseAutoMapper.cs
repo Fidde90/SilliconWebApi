@@ -1,13 +1,10 @@
 ﻿using Infrastructure.Dtos;
 using Infrastructure.Entities;
-using Infrastructure.Services;
 
 namespace Infrastructure.Factories
 {
-    public class CourseAutoMapper(CategoryService categoryService)
+    public static class CourseAutoMapper
     {
-        private readonly CategoryService _categoryService = categoryService;
-
         public static CourseDto ToCourseDto(CourseEntity entity)
         {
             if (entity != null)
@@ -39,7 +36,7 @@ namespace Infrastructure.Factories
                 var newEntity = new CourseEntity
                 {
                     Title = dto.Title,
-                    Author = dto.Author,    
+                    Author = dto.Author,
                     Price = dto.Price,
                     Hours = dto.Hours,
                     PictureUrl = dto.PictureUrl,
@@ -84,7 +81,7 @@ namespace Infrastructure.Factories
         {
             if (entity != null)
             {
-                var newDto = new UpdateCourseDto 
+                var newDto = new UpdateCourseDto
                 {
                     Id = entity.Id,
                     Title = entity.Title,

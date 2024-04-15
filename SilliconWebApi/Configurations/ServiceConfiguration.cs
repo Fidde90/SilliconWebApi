@@ -9,7 +9,7 @@ namespace SilliconWebApi.Configurations
             services.AddScoped<CategoryService>();
             services.AddScoped<CourseService>();
             services.AddScoped<SubscriberService>();
-            services.AddScoped<ContactMessageService>();
+            services.AddScoped<ContactService>();
         }
     }
 }

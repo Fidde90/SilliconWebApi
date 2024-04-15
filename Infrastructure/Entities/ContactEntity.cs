@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Entities
 {
-    public class ContactMessageEntity
+    public class ContactEntity
     {
         [Key]
         public int Id { get; set; }

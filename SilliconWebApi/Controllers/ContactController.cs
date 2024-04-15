@@ -1,6 +1,8 @@
 ﻿using Infrastructure.Dtos;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using SilliconWebApi.Filters;
+using System.Diagnostics;
 
 namespace SilliconWebApi.Controllers
 {
@@ -9,12 +11,31 @@ namespace SilliconWebApi.Controllers
     [ApiController]
     public class ContactController : ControllerBase
     {
+        private readonly ContactService _contactService;
+
+        public ContactController(ContactService contactService)
+        {
+            _contactService = contactService;
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateMessage(ContactMessageDto dto)
         {
+            try 
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await _contactService.CreateMessageAsync(dto);
+                    if (result == true)
+                    {
+                        return Ok();
+                    }
+                }
 
-
-            return Ok();
+                return BadRequest();
+            }
+            catch (Exception e) { Debug.WriteLine("Error: {0}", e); }
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }

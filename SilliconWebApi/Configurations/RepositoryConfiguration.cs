@@ -9,7 +9,7 @@ namespace SilliconWebApi.Configurations
             services.AddScoped<SubscriberRepository>();
             services.AddScoped<CourseRepository>();
             services.AddScoped<CategoryRepository>();
-            services.AddScoped<ContactMessageRepository>();
+            services.AddScoped<ContactRepository>();
         }
     }
 }

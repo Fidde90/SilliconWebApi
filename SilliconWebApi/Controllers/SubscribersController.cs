@@ -9,7 +9,7 @@ namespace SilliconWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [UseApiKey] //nyckeln vi gjorde
+    [UseApiKey]
     public class SubscribersController(SubscriberService subscriberService) : ControllerBase
     {
         private readonly SubscriberService _subscriberService = subscriberService;
