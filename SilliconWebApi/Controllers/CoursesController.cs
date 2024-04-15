@@ -2,12 +2,13 @@
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SilliconWebApi.Filters;
 using System.Diagnostics;
 
 namespace SilliconWebApi.Controllers
 {
     [Route("api/[controller]")]
-    //[UseApiKey]
+    [UseApiKey]
     [ApiController]
     public class CoursesController(CourseService coursesService) : ControllerBase
     {
@@ -64,6 +65,7 @@ namespace SilliconWebApi.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto newModel)
         {
             try

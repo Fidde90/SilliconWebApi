@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SilliconWebApi.Controllers
 {
-    public class AuthController(IConfiguration configuration) : Controller
+    public class AuthController(IConfiguration configuration) : ControllerBase
     {
         private readonly IConfiguration _configuration = configuration;
 

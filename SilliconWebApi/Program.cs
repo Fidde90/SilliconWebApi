@@ -1,6 +1,4 @@
 using Infrastructure.Contexts;
-using Infrastructure.Repositories;
-using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using SilliconWebApi.Configurations;
 
@@ -24,14 +22,8 @@ builder.Services.AddCors(x =>
     });
 });
 
-builder.Services.AddScoped<SubscriberRepository>();
-builder.Services.AddScoped<SubscriberService>();
-
-builder.Services.AddScoped<CourseRepository>();
-builder.Services.AddScoped<CourseService>();
-
-builder.Services.AddScoped<CategoryRepository>();
-builder.Services.AddScoped<CategoryService>();
+builder.Services.RegisterRepositories(builder.Configuration);
+builder.Services.RegisterServices(builder.Configuration);
 
 var app = builder.Build();
 

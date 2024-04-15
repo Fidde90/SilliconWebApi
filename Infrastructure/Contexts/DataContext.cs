@@ -11,6 +11,9 @@ namespace Infrastructure.Contexts
 
         public virtual DbSet<CategoryEntity> Categories { get; set; }
 
+        public virtual DbSet<ContactEntity> ContactMessages { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
