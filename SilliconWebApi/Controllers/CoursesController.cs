@@ -17,10 +17,8 @@ namespace SilliconWebApi.Controllers
 
         #region User actions
         [HttpGet]
-        public async Task<IActionResult> GetAllCoursesAsync(string category = "", string searchValue = "", int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> GetFilterdCoursesAsync(string category = "", string searchValue = "", int pageNumber = 1, int pageSize = 10)
         {
-            var response = new CourseResult();
-
             try
             {
                 var courseResponse = await _coursesService.GetAllCoursesAsync(category, searchValue, pageNumber, pageSize);
@@ -35,6 +33,24 @@ namespace SilliconWebApi.Controllers
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return NotFound(); // kolla in detta senare?
         }
+
+        [Route("/allcourses")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllCoursesAsync()
+        {
+            try
+            {
+                var listOfCourses = await _coursesService.GetAllCoursesAsync();
+
+                if (listOfCourses != null)
+                {
+                    return Ok(listOfCourses);
+                }
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return NotFound(); // kolla in detta senare?
+        }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneCourseAsync(int id)

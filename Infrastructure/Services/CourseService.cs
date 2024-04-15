@@ -11,6 +11,7 @@ namespace Infrastructure.Services
     {
         private readonly CourseRepository _courseRepository = coursesRepository;
         private readonly CategoryService _categoryService = categoryService;
+
         public async Task<CourseEntity> CreateCourseAsync(CourseDto newCourse, string categoryName)
         {
             try
@@ -30,6 +31,7 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+
         public async Task<CourseResult> GetAllCoursesAsync(string category = "", string searchValue = "", int pageNumber = 1, int pageSize = 10)
         {
             List<CourseDto> courseList = [];
@@ -56,6 +58,28 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+
+        public async Task<List<CourseDto>> GetAllCoursesAsync()
+        {
+            List<CourseDto> courses = new List<CourseDto>();
+            try
+            {
+                var list = await _courseRepository.GetAll();
+
+                if (list.Any())
+                {
+                    foreach (var entity in list)
+                    {
+                        var course = CourseAutoMapper.ToCourseDto(entity);
+                        courses.Add(course);
+                    }             
+                    return courses;
+                }
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
+
         public async Task<CourseEntity> GetOneCourseAsync(int id)
         {
             try
@@ -67,6 +91,7 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+
         public async Task<UpdateCourseDto> UpdateCourseAsync(UpdateCourseDto newValues)
         {
             try
@@ -87,6 +112,7 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+
         public async Task<bool> DeleteCourseAsync(int id)
         {
             try

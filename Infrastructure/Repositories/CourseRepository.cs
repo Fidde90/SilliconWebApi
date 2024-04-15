@@ -29,5 +29,17 @@ namespace Infrastructure.Repositories
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+
+        public async override Task<IEnumerable<CourseEntity>> GetAll()
+        {
+            try
+            {
+                var list = await _dataContext.Set<CourseEntity>().Include(e => e.Category).ToListAsync();
+                if (list.Count > 0)
+                    return list;
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
     }
 }

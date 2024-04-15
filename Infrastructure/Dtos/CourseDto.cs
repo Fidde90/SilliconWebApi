@@ -1,5 +1,4 @@
-﻿using Infrastructure.Entities;
-
+﻿
 namespace Infrastructure.Dtos
 {
     public class CourseDto
@@ -25,5 +24,7 @@ namespace Infrastructure.Dtos
         public string? PictureUrl { get; set; }
 
         public string Category { get; set; } = null!;
+
+        //public virtual ICollection<AppUserDto> PlayerWeapons { get; set; } = new List<AppUserDto>();
     }
 }

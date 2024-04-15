@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Contexts;
+using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Linq.Expressions;
@@ -36,6 +37,7 @@ namespace Infrastructure.Repositories
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+
         public virtual async Task<IEnumerable<TEntity>> GetAll(string categoty = "", string searchValue = "")
         {
             try
