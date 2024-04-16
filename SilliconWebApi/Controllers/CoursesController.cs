@@ -34,13 +34,13 @@ namespace SilliconWebApi.Controllers
             return NotFound(); // kolla in detta senare?
         }
 
-        [Route("/allcourses")]
-        [HttpGet]
-        public async Task<IActionResult> GetAllCoursesAsync()
+        [Route("/savedcourses")]
+        [HttpPost]
+        public async Task<IActionResult> GetAllCoursesAsync(List<int> ids)
         {
             try
             {
-                var listOfCourses = await _coursesService.GetAllCoursesAsync();
+                var listOfCourses = await _coursesService.GetAllCoursesByIdsAsync(ids);
 
                 if (listOfCourses != null)
                 {

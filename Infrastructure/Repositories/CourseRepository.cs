@@ -41,5 +41,17 @@ namespace Infrastructure.Repositories
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+
+        public async Task<List<CourseEntity>> GetAllByIds(List<int> ids)
+        {
+            try
+            {
+                var list = await _dataContext.Set<CourseEntity>().Where(x => ids.Contains(x.Id)).Include(e => e.Category).ToListAsync();
+                if (list.Count > 0)
+                    return list;
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
     }
 }

@@ -59,21 +59,21 @@ namespace Infrastructure.Services
             return null!;
         }
 
-        public async Task<List<CourseDto>> GetAllCoursesAsync()
+        public async Task<List<CourseDto>> GetAllCoursesByIdsAsync(List<int> ids)
         {
-            List<CourseDto> courses = new List<CourseDto>();
             try
             {
-                var list = await _courseRepository.GetAll();
+                var courses = await _courseRepository.GetAllByIds(ids);
 
-                if (list.Any())
-                {
-                    foreach (var entity in list)
+                if (courses.Any())
+                {         
+                    List<CourseDto> returnList = []; 
+
+                    foreach(var course in courses)
                     {
-                        var course = CourseAutoMapper.ToCourseDto(entity);
-                        courses.Add(course);
-                    }             
-                    return courses;
+                        returnList.Add(CourseAutoMapper.ToCourseDto(course));
+                    }
+                    return returnList;
                 }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }

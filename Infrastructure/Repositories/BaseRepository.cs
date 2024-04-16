@@ -1,5 +1,4 @@
 ﻿using Infrastructure.Contexts;
-using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Linq.Expressions;
@@ -22,10 +21,6 @@ namespace Infrastructure.Repositories
             return null!;
         }
 
-        /// <summary>
-        ///     Gets all entities of a given type from the database, as a IEnumerable list.
-        /// </summary>
-        /// <returns>returns a IEnumerable list</returns>
         public virtual async Task<IEnumerable<TEntity>> GetAll()
         {
             try
