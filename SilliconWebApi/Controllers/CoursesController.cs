@@ -51,21 +51,23 @@ namespace SilliconWebApi.Controllers
             return NotFound(); // kolla in detta senare?
         }
 
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneCourseAsync(int id)
         {
-            var course = await _coursesService.GetOneCourseAsync(id);
-            if (course != null)
-                return Ok(course);
-
+            try
+            {
+                var course = await _coursesService.GetOneCourseAsync(id);
+                if (course != null)
+                    return Ok(course);
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return NotFound();
         }
         #endregion
 
         #region Admin actions
-        [HttpPost]
         [Authorize]
+        [HttpPost]
         public async Task<IActionResult> CreateCourseAsync(CourseDto newCourse)
         {
             if (ModelState.IsValid)
@@ -80,8 +82,8 @@ namespace SilliconWebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPut]
         [Authorize]
+        [HttpPut]
         public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto newModel)
         {
             try

@@ -80,13 +80,14 @@ namespace Infrastructure.Services
             return null!;
         }
 
-        public async Task<CourseEntity> GetOneCourseAsync(int id)
+        public async Task<CourseDto> GetOneCourseAsync(int id)
         {
             try
             {
                 var course = await _courseRepository.GetOne(c => c.Id == id);
-                if (course != null)
-                    return course;
+                var returnCourse = CourseAutoMapper.ToCourseDto(course);
+                if (returnCourse != null)
+                    return returnCourse;
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;

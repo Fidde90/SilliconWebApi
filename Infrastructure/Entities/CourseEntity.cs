@@ -32,7 +32,5 @@ namespace Infrastructure.Entities
         public int? CategoryId { get; set; }
 
         public virtual CategoryEntity? Category { get; set; }
-
-        //public virtual ICollection<UserDto> PlayerWeapons { get; set; } = new List<UserDto>();
     }
 }
