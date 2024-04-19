@@ -80,6 +80,26 @@ namespace Infrastructure.Services
             return null!;
         }
 
+        public async Task<IEnumerable<CourseDto>> GetAllAsync()
+        {
+            try
+            {
+                var courses = await _courseRepository.GetAll();
+                if (courses.Any())
+                {
+                    List<CourseDto> returnList = [];
+
+                    foreach (var course in courses)
+                    {
+                        returnList.Add(CourseAutoMapper.ToCourseDto(course));
+                    }
+                    return returnList;
+                }
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
+
         public async Task<CourseDto> GetOneCourseAsync(int id)
         {
             try

@@ -19,6 +19,8 @@ namespace Infrastructure.Entities
 
         public bool IsBestSeller { get; set; } = false;
 
+        public bool IsDigital { get; set; } = false;
+
         public string? LikesInNumbers { get; set; }
 
         public string? LikesInProcent { get; set; }
@@ -29,8 +31,8 @@ namespace Infrastructure.Entities
 
         public DateTime LastUpdated { get; set; }
 
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
-        public virtual CategoryEntity? Category { get; set; }
+        public virtual CategoryEntity Category { get; set; } = null!;
     }
 }

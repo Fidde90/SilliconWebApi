@@ -72,14 +72,32 @@ namespace SilliconWebApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _coursesService.CreateCourseAsync(newCourse, newCourse.Category);
+                try
+                {
+                    var result = await _coursesService.CreateCourseAsync(newCourse, newCourse.Category);
+                    if (result != null)
+                        return Ok();
 
-                if (result != null)
-                    return Ok();
-
-                return Conflict();
+                    return Conflict();
+                }
+                catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             }
             return BadRequest();
+        }
+
+
+        [Route("/getAllAdmin")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllCourses()
+        {
+            try
+            {
+                var courses = await _coursesService.GetAllAsync();
+                if (courses != null)
+                    return Ok(courses);
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return NotFound(); 
         }
 
         [Authorize]
