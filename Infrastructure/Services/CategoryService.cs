@@ -66,5 +66,23 @@ namespace Infrastructure.Services
             }
             return false;
         }
+
+        public async Task<bool> DeleteCategory(int id)
+        {
+            if (id >= 0)
+            {
+                try
+                {
+                    if (await _categoryRepository.Exists(c => c.Id == id))
+                    {
+                        var deleted = await _categoryRepository.DeleteFromDb(c => c.Id == id);                  
+                        if (deleted)
+                            return true;
+                    }
+                }
+                catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            }
+            return false;
+        }
     }
 }
