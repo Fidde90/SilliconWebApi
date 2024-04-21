@@ -1,6 +1,4 @@
-﻿using Infrastructure.Entities;
-
-namespace Infrastructure.Dtos
+﻿namespace Infrastructure.Dtos
 {
     public class UpdateCourseDto
     {

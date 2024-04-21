@@ -5,14 +5,9 @@ using System.Diagnostics;
 
 namespace Infrastructure.Services
 {
-    public class SubscriberService
+    public class SubscriberService(SubscriberRepository repository)
     {
-        private readonly SubscriberRepository _subscriberRepository;
-
-        public SubscriberService(SubscriberRepository repository)
-        {
-            _subscriberRepository = repository;
-        }
+        private readonly SubscriberRepository _subscriberRepository = repository;
 
         public async Task<SubscriberEntity> CreateSubscriberAsync(SubscriberDto subscriber)
         {

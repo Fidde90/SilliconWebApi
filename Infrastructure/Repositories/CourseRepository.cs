@@ -14,7 +14,7 @@ namespace Infrastructure.Repositories
         {
             try
             {
-                var query = _dataContext.Courses.Include(c => c.Category).AsQueryable(); //inkluderar categorierna och gör den frågbar
+                var query = _dataContext.Courses.Include(c => c.Category).AsQueryable();
 
                 if (!string.IsNullOrWhiteSpace(category) && category != "all")
                     query = query.Where(c => c.Category!.CategoryName == category);
@@ -22,8 +22,8 @@ namespace Infrastructure.Repositories
                 if (!string.IsNullOrWhiteSpace(searchValue) && searchValue != "all")
                     query = query.Where(x => x.Title.Contains(searchValue) || x.Author!.Contains(searchValue) || x.Price!.Contains(searchValue));
 
-                query = query.OrderByDescending(o => o.LastUpdated); // sorterar den efter senast uppdaterad
-                var courses = await query.ToListAsync(); //blir sedan en lista
+                query = query.OrderByDescending(o => o.LastUpdated);
+                var courses = await query.ToListAsync(); 
                 if (courses.Count > 0)
                     return courses;
             }

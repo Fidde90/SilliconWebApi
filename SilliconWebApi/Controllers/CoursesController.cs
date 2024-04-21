@@ -31,7 +31,7 @@ namespace SilliconWebApi.Controllers
                 }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
-            return NotFound(); // kolla in detta senare?
+            return NotFound(); 
         }
 
         [Route("/savedcourses")]
