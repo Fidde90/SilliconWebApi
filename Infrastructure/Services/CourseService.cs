@@ -11,6 +11,7 @@ namespace Infrastructure.Services
     {
         private readonly CourseRepository _courseRepository = coursesRepository;
         private readonly CategoryService _categoryService = categoryService;
+
         public async Task<CourseEntity> CreateCourseAsync(CourseDto newCourse, string categoryName)
         {
             try
@@ -30,6 +31,7 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+
         public async Task<CourseResult> GetAllCoursesAsync(string category = "", string searchValue = "", int pageNumber = 1, int pageSize = 10)
         {
             List<CourseDto> courseList = [];
@@ -56,17 +58,61 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
-        public async Task<CourseEntity> GetOneCourseAsync(int id)
+
+        public async Task<List<CourseDto>> GetAllCoursesByIdsAsync(List<int> ids)
         {
             try
             {
-                var course = await _courseRepository.GetOne(c => c.Id == id);
-                if (course != null)
-                    return course;
+                var courses = await _courseRepository.GetAllByIds(ids);
+
+                if (courses.Any())
+                {         
+                    List<CourseDto> returnList = []; 
+
+                    foreach(var course in courses)
+                    {
+                        returnList.Add(CourseAutoMapper.ToCourseDto(course));
+                    }
+                    return returnList;
+                }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+
+        public async Task<IEnumerable<CourseDto>> GetAllAsync()
+        {
+            try
+            {
+                var courses = await _courseRepository.GetAll();
+                if (courses.Any())
+                {
+                    List<CourseDto> returnList = [];
+
+                    foreach (var course in courses)
+                    {
+                        returnList.Add(CourseAutoMapper.ToCourseDto(course));
+                    }
+                    return returnList;
+                }
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
+
+        public async Task<CourseDto> GetOneCourseAsync(int id)
+        {
+            try
+            {
+                var course = await _courseRepository.GetOne(c => c.Id == id);
+                var returnCourse = CourseAutoMapper.ToCourseDto(course);
+                if (returnCourse != null)
+                    return returnCourse;
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return null!;
+        }
+
         public async Task<UpdateCourseDto> UpdateCourseAsync(UpdateCourseDto newValues)
         {
             try
@@ -87,6 +133,7 @@ namespace Infrastructure.Services
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return null!;
         }
+
         public async Task<bool> DeleteCourseAsync(int id)
         {
             try

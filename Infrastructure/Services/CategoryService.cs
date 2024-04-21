@@ -10,6 +10,26 @@ namespace Infrastructure.Services
     {
         private readonly CategoryRepository _categoryRepository = categoryRepository;
 
+        public async Task<bool> CreateCategory(CreateCategoryDto newCategory)
+        {
+            if (newCategory != null)
+            {
+                try
+                {
+                    if (!await _categoryRepository.Exists(c => c.CategoryName == newCategory.CategoryName))
+                    {
+                        var category = CategoryAutoMapper.ToCategoryEntity(newCategory);
+                        var created = await _categoryRepository.AddToDb(category);
+
+                        if (created != null)
+                            return true;
+                    }
+                }
+                catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            }
+            return false;
+        }
+
         public async Task<IEnumerable<CategoryDto>> GetAllCategories()
         {
             List<CategoryDto> Dtos = [];
@@ -47,20 +67,18 @@ namespace Infrastructure.Services
             return null!;
         }
 
-        public async Task<bool> CreateCategory(CreateCategoryDto newCategory)
+        public async Task<bool> DeleteCategory(int id)
         {
-            if(newCategory != null)
+            if (id >= 0)
             {
                 try
                 {
-                    if(!await _categoryRepository.Exists(c => c.CategoryName == newCategory.CategoryName))
+                    if (await _categoryRepository.Exists(c => c.Id == id))
                     {
-                        var category = CategoryAutoMapper.ToCategoryEntity(newCategory);
-                        var created = await _categoryRepository.AddToDb(category);
-
-                        if (created != null)
+                        var deleted = await _categoryRepository.DeleteFromDb(c => c.Id == id);                  
+                        if (deleted)
                             return true;
-                    }                
+                    }
                 }
                 catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             }

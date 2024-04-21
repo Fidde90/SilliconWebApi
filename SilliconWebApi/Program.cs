@@ -15,10 +15,9 @@ builder.Services.AddCors(x =>
     x.AddPolicy("CustomOriginPolicy", policy =>
     {
         policy
-        .WithOrigins("https://localhost:7198")
         .AllowAnyHeader()
-        .AllowAnyMethod();
-        //.AllowAnyOrigins();
+        .AllowAnyMethod()
+        .AllowAnyOrigin();
     });
 });
 
@@ -27,11 +26,6 @@ builder.Services.RegisterServices(builder.Configuration);
 
 var app = builder.Build();
 
-// allowanyheaders innebär tex att man kan använda alla olika contenttypes eller keys osv..
-// allowanyorigin innebär att alla har tillgång till apiet.
-// allowanymethods innebär att man kan göra alla metoder som tex post,put,delete,get osv.
-// just nu har vi skrivit att bara min adress sak få komma åt detta apiet.(se högre upp)
-// eftersom vi kör localhost så kommer det fungerar nu ändå.
 app.UseCors("CustomOriginPolicy");
 
 app.UseSwagger();

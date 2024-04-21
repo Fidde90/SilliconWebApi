@@ -17,10 +17,8 @@ namespace SilliconWebApi.Controllers
 
         #region User actions
         [HttpGet]
-        public async Task<IActionResult> GetAllCoursesAsync(string category = "", string searchValue = "", int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> GetFilterdCoursesAsync(string category = "", string searchValue = "", int pageNumber = 1, int pageSize = 10)
         {
-            var response = new CourseResult();
-
             try
             {
                 var courseResponse = await _coursesService.GetAllCoursesAsync(category, searchValue, pageNumber, pageSize);
@@ -33,39 +31,77 @@ namespace SilliconWebApi.Controllers
                 }
             }
             catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return NotFound(); 
+        }
+
+        [Route("/savedcourses")]
+        [HttpPost]
+        public async Task<IActionResult> GetAllCoursesAsync(List<int> ids)
+        {
+            try
+            {
+                var listOfCourses = await _coursesService.GetAllCoursesByIdsAsync(ids);
+
+                if (listOfCourses != null)
+                {
+                    return Ok(listOfCourses);
+                }
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return NotFound(); // kolla in detta senare?
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneCourseAsync(int id)
         {
-            var course = await _coursesService.GetOneCourseAsync(id);
-            if (course != null)
-                return Ok(course);
-
+            try
+            {
+                var course = await _coursesService.GetOneCourseAsync(id);
+                if (course != null)
+                    return Ok(course);
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             return NotFound();
         }
         #endregion
 
         #region Admin actions
-        [HttpPost]
         [Authorize]
+        [HttpPost]
         public async Task<IActionResult> CreateCourseAsync(CourseDto newCourse)
         {
             if (ModelState.IsValid)
             {
-                var result = await _coursesService.CreateCourseAsync(newCourse, newCourse.Category);
+                try
+                {
+                    var result = await _coursesService.CreateCourseAsync(newCourse, newCourse.Category);
+                    if (result != null)
+                        return Ok();
 
-                if (result != null)
-                    return Ok();
-
-                return Conflict();
+                    return Conflict();
+                }
+                catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
             }
             return BadRequest();
         }
 
-        [HttpPut]
+
+        [Route("/getAllAdmin")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllCourses()
+        {
+            try
+            {
+                var courses = await _coursesService.GetAllAsync();
+                if (courses != null)
+                    return Ok(courses);
+            }
+            catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            return NotFound(); 
+        }
+
         [Authorize]
+        [HttpPut]
         public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto newModel)
         {
             try

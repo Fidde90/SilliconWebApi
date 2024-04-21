@@ -9,14 +9,9 @@ namespace SilliconWebApi.Controllers
     [Route("api/[controller]")]
     [UseApiKey]
     [ApiController]
-    public class ContactController : ControllerBase
+    public class ContactController(ContactService contactService) : ControllerBase
     {
-        private readonly ContactService _contactService;
-
-        public ContactController(ContactService contactService)
-        {
-            _contactService = contactService;
-        }
+        private readonly ContactService _contactService = contactService;
 
         [HttpPost]
         public async Task<IActionResult> CreateMessage(ContactMessageDto dto)

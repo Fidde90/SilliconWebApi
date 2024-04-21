@@ -1,5 +1,4 @@
-﻿using Infrastructure.Entities;
-
+﻿
 namespace Infrastructure.Dtos
 {
     public class CourseDto
@@ -21,6 +20,8 @@ namespace Infrastructure.Dtos
         public string? LikesInProcent { get; set; }
 
         public bool IsBestSeller { get; set; } = false;
+
+        public bool IsDigital { get; set; } = false;
 
         public string? PictureUrl { get; set; }
 

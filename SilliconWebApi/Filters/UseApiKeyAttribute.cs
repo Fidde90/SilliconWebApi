@@ -8,7 +8,7 @@ namespace SilliconWebApi.Filters
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            //hämtar in appsettings.json filen
+            //Gets the appsettings.json file
             var config = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
             var apiKey = config.GetValue<string>("ApiKey:Secret"); // hämtar upp nyckeln
 

@@ -18,6 +18,7 @@ namespace Infrastructure.Factories
                     Hours = entity.Hours,
                     PictureUrl = entity.PictureUrl,
                     IsBestSeller = entity.IsBestSeller,
+                    IsDigital = entity.IsDigital,
                     LikesInNumbers = entity.LikesInNumbers,
                     LikesInProcent = entity.LikesInProcent,
                     DiscountPrice = entity.DiscountPrice,
@@ -41,6 +42,7 @@ namespace Infrastructure.Factories
                     Hours = dto.Hours,
                     PictureUrl = dto.PictureUrl,
                     IsBestSeller = dto.IsBestSeller!,
+                    IsDigital = dto.IsDigital,
                     LikesInNumbers = dto.LikesInNumbers,
                     LikesInProcent = dto.LikesInProcent,
                     DiscountPrice = dto.DiscountPrice,
@@ -65,6 +67,7 @@ namespace Infrastructure.Factories
                     Hours = dto.Hours,
                     PictureUrl = dto.PictureUrl,
                     IsBestSeller = dto.IsBestSeller!,
+                    IsDigital = dto.IsDigital,
                     LikesInNumbers = dto.LikesInNumbers,
                     LikesInProcent = dto.LikesInProcent,
                     DiscountPrice = dto.DiscountPrice,
@@ -90,11 +93,12 @@ namespace Infrastructure.Factories
                     Hours = entity.Hours!,
                     PictureUrl = entity.PictureUrl!,
                     IsBestSeller = entity.IsBestSeller!,
+                    IsDigital = entity.IsDigital,
                     LikesInNumbers = entity.LikesInNumbers,
                     LikesInProcent = entity.LikesInProcent,
                     DiscountPrice = entity.DiscountPrice,
                     LastUpdated = entity.LastUpdated,
-                    CategoryId = categoryId
+                    CategoryId = entity.CategoryId,                 
                 };
 
                 return newDto;

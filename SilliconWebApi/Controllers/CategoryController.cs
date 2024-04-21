@@ -47,5 +47,21 @@ namespace SilliconWebApi.Controllers
 
             return BadRequest();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            if (id >= 0)
+            {
+                try
+                {
+                    var result = await _categoryService.DeleteCategory(id);
+                    if (result == true)
+                        return Ok();
+                }
+                catch (Exception e) { Debug.WriteLine($"Error: {e.Message}"); }
+            }
+            return NotFound();
+        }
     }
 }
